@@ -19,7 +19,14 @@ body {
   height: 100vh;
 }
 .render-step-slot {
-  
+  > h2 {
+    font-family: Helvetica, sans-serif;
+  }
+}
+
+.step-render {
+  display: inline-block;
+  border: 1px solid rgba(black, 0.5);
 }
 
 #app {

@@ -62,14 +62,19 @@ function renderCanvasAsWebGLContext (canvasToDraw) {
   `
   const fragmentShaderSource = `
     precision highp float;
+    
     uniform sampler2D texture;
+    uniform float time;
+
     void main () {
       vec2 viewPortWidth = vec2(${gl.canvas.width}.0, ${gl.canvas.height}.0);
 
       vec2 uv = gl_FragCoord.xy / viewPortWidth;
       uv.y = 1.0 - uv.y;
-      // gl_FragColor = vec4(uv, 0.0, 1.0);
-      gl_FragColor = texture2D(texture, uv);
+      gl_FragColor = texture2D(texture, uv + vec2(
+        sin(uv.y * 10.0 - time * .001) * 0.02,
+        cos(uv.x * 20.0 + time * .001) * 0.01
+      ));
     }
   `
   const programInfo = twgl.createProgramInfo(gl, [vertexShaderSource, fragmentShaderSource]);
@@ -89,16 +94,23 @@ function renderCanvasAsWebGLContext (canvasToDraw) {
   }
 
   const texLocation = gl.getUniformLocation(programInfo.program, 'texture')
+  const timeLocation = gl.getUniformLocation(programInfo.program, 'time')
 
-  gl.useProgram(programInfo.program)
-  gl.activeTexture(gl.TEXTURE0)
-  gl.bindTexture(gl.TEXTURE_2D, texture)
-  gl.uniform1i(texLocation, 0)
   twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
-  twgl.setUniforms(programInfo, uniforms)
-  console.log(programInfo)
-  twgl.drawBufferInfo(gl, bufferInfo)
-  console.log(gl.getActiveUniform(programInfo.program, 0))
+
+  rAf()
+
+  function rAf (ts = 0) {
+    gl.useProgram(programInfo.program)
+    gl.activeTexture(gl.TEXTURE0)
+    gl.bindTexture(gl.TEXTURE_2D, texture)
+    gl.uniform1i(texLocation, 0)
+    gl.uniform1f(timeLocation, ts)
+    twgl.setUniforms(programInfo, uniforms)
+    twgl.drawBufferInfo(gl, bufferInfo)
+    
+    requestAnimationFrame(rAf)
+  }
 
 }
 
