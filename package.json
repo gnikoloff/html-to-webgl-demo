@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/gnikoloff/html-to-webgl-demo#readme",
   "devDependencies": {
-    "parcel": "^1.12.4"
+    "parcel": "^1.12.4",
+    "sass": "^1.29.0"
   },
   "dependencies": {
     "mini-svg-data-uri": "^1.2.3",

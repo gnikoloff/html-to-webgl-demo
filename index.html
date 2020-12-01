@@ -4,17 +4,55 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <style>
-    * { margin: 0; padding: 0; }
-    #my-message {
-      display: inline-block;;
-    }
-  </style>
 </head>
 <body>
 
-  <div id="my-message">
-    <h1>hello</h1>
+  <div id="app">
+    <div class="main">
+      <div data-name="html-input" class="render-step-slot">
+        <h2>01. Input HTML</h2>
+        <div class="step-render">
+          <div id="html-to-render">
+            <!-- <h1>hello</h1> -->
+            <div style="max-width: 400px; border: 5px solid blue; padding: 20px;">
+              <h1
+                style="font-family: monospace; color: brown;"
+              >
+                Welcome
+              </h1>
+              <p
+                style="background: yellow;"
+              >
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti laborum error tempore nulla consequuntur, blanditiis labore natus ratione eius, placeat omnis quas adipisci architecto harum accusamus reprehenderit, repellendus ullam. Culpa!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div data-name="svg-render" class="render-step-slot">
+        <h2>02. Input HTML as foreignObject in SVG</h2>
+        <div class="step-render"></div>
+      </div>
+
+      <div data-name="canvas-render" class="render-step-slot">
+        <h2>03. SVG drawn to canvas2D with inlined src</h2>
+        <div class="step-render"></div>
+      </div>
+
+      <div data-name="webgl-render" class="render-step-slot">
+        <h2>04. canvas2D rendered as WebGL Texture and drawn on a quad</h2>
+        <div class="step-render"></div>
+      </div>
+
+      <button id="step-increment">
+
+      </button>
+
+    </div>
+    <div class="aside">
+
+    </div>
   </div>
 
   <script src="./app/index.js"></script>

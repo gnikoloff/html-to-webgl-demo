@@ -1,9 +1,10 @@
-console.clear()
-
 import svgToMiniDataURI from 'mini-svg-data-uri'
 import * as twgl from 'twgl.js'
 
-const domElementToRender = document.getElementById('my-message')
+import './index.scss'
+
+const domElementToRender = document.getElementById('html-to-render')
+const stepSlotsEls = document.getElementsByClassName('render-step-slot')
 
 const {
   width: domElementWidth,
@@ -12,26 +13,28 @@ const {
 
 // Compute all style properties for each element inside the HTML we want to render and inline them
 // Ideally, your styling should be inline so you can omit this expensive step
-const allChildrenInsideDomElement = domElementToRender.querySelectorAll('*')
-for (let i = 0; i < allChildrenInsideDomElement.length; i++) {
-  const child = allChildrenInsideDomElement[i]
-  const style = getComputedStyle(child)
-  child.style = style.cssText
-}
+// const allChildrenInsideDomElement = domElementToRender.querySelectorAll('*')
+// for (let i = 0; i < allChildrenInsideDomElement.length; i++) {
+//   const child = allChildrenInsideDomElement[i]
+//   const style = getComputedStyle(child)
+//   child.style = style.cssText
+// }
 const domElementHTML = domElementToRender.innerHTML
+console.log(domElementToRender.cloneNode(true))
+
 
 let fragmentWithBase64Images = encodeImagesToFragment(domElementHTML)
 fragmentWithBase64Images = constructSVGWithForeignObject(fragmentWithBase64Images)
 
 makeCanvasFromSVGFragment(fragmentWithBase64Images).then(canvasToRenderAsWebGLTexture => {
-  document.body.appendChild(canvasToRenderAsWebGLTexture)
+  appendCurrentStepToSection('canvas-render', canvasToRenderAsWebGLTexture)
   renderCanvasAsWebGLContext(canvasToRenderAsWebGLTexture)
 })
 
 // console.log(getComputedStyle(domElementToRender))
 
-document.write(fragmentWithBase64Images)
 
+appendCurrentStepToSection('svg-render', fragmentWithBase64Images)
 // ------------ utils ------------
 
 function renderCanvasAsWebGLContext (canvasToDraw) {
@@ -41,7 +44,7 @@ function renderCanvasAsWebGLContext (canvasToDraw) {
   gl.canvas.width = canvasToDraw.width
   gl.canvas.height = canvasToDraw.height
 
-  document.body.appendChild(canvas)
+  appendCurrentStepToSection('webgl-render', canvas)
 
   const arrays = {
     position: [-1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 0, 1, -1, 0, 1, 1, 0]
@@ -181,4 +184,15 @@ function encodeImageToBase64 (src) {
     img.crossOrigin = 'Anonymous'
     img.src = src
   })
+}
+
+function appendCurrentStepToSection (sectionName, el) {
+  const sectionEl = document.querySelector(`[data-name=${sectionName}]`)
+  const renderOutputEl = sectionEl.getElementsByClassName('step-render')[0]
+  console.log(sectionName, renderOutputEl)
+  if (typeof el === 'string') {
+    renderOutputEl.innerHTML = el
+  } else {
+    renderOutputEl.appendChild(el)
+  }
 }

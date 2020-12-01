@@ -1,0 +1,29 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+.main,
+.aside {
+  height: 100vh;
+  overflow: scroll;
+  box-sizing: border-box;
+  padding: 30px;
+}
+.main {
+  width: 60%;
+}
+.aside {
+  background: #1c1c1e;
+  width: 40%;
+  height: 100vh;
+}
+.render-step-slot {
+  
+}
+
+#app {
+  display: flex;
+  justify-content: space-between;
+  // div
+}
