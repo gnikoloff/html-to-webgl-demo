@@ -1,6 +1,26 @@
 body {
   padding: 0;
   margin: 0;
+  &:after {
+    content: 'Please view this demo on a bigger screen';
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: black;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  @media (min-width: 820px) {
+    &:after {
+      content: none;
+    }
+  }
 }
 
 .main,
