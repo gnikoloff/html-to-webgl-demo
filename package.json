@@ -1,0 +1,26 @@
+{
+  "name": "html-to-webgl-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gnikoloff/html-to-webgl-demo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gnikoloff/html-to-webgl-demo/issues"
+  },
+  "homepage": "https://github.com/gnikoloff/html-to-webgl-demo#readme",
+  "devDependencies": {
+    "parcel": "^1.12.4"
+  },
+  "dependencies": {
+    "mini-svg-data-uri": "^1.2.3",
+    "twgl.js": "^4.17.0"
+  }
+}
