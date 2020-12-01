@@ -59,16 +59,43 @@ function renderCanvasAsWebGLContext (canvasToDraw) {
   `
   const fragmentShaderSource = `
     precision highp float;
+    uniform sampler2D texture;
     void main () {
-      gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+      vec2 viewPortWidth = vec2(${gl.canvas.width}.0, ${gl.canvas.height}.0);
+
+      vec2 uv = gl_FragCoord.xy / viewPortWidth;
+      uv.y = 1.0 - uv.y;
+      // gl_FragColor = vec4(uv, 0.0, 1.0);
+      gl_FragColor = texture2D(texture, uv);
     }
   `
   const programInfo = twgl.createProgramInfo(gl, [vertexShaderSource, fragmentShaderSource]);
 
-  gl.useProgram(programInfo.program);
+  const texture = gl.createTexture()
+  gl.bindTexture(gl.TEXTURE_2D, texture)
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, canvasToDraw)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true)
+
+  const uniforms = {
+    texture,
+  }
+
+  const texLocation = gl.getUniformLocation(programInfo.program, 'texture')
+
+  gl.useProgram(programInfo.program)
+  gl.activeTexture(gl.TEXTURE0)
+  gl.bindTexture(gl.TEXTURE_2D, texture)
+  gl.uniform1i(texLocation, 0)
   twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
-  // twgl.setUniforms(programInfo, uniforms)
+  twgl.setUniforms(programInfo, uniforms)
+  console.log(programInfo)
   twgl.drawBufferInfo(gl, bufferInfo)
+  console.log(gl.getActiveUniform(programInfo.program, 0))
 
 }
 
@@ -87,7 +114,7 @@ function makeCanvasFromSVGFragment (fragment) {
     img.onerror = () => reject(new Error('could not draw SVG fragment into canvas'))
     // Use helper library to encode fragment
     img.src = svgToMiniDataURI(fragment)
-    console.log(img.src)
+    // console.log(img.src)
   })
 }
 
