@@ -122,21 +122,21 @@
         </div>
       </div>
       <div data-name="svg-render" class="render-step-slot">
-        <h2>02. Input HTML as foreignObject in SVG</h2>
+        <h2>02. Insert HTML fragment in SVG foreignObject</h2>
         <div class="step-render-wrapper">
           <div class="step-render"></div>
         </div>
       </div>
   
       <div data-name="canvas-render" class="render-step-slot">
-        <h2>03. SVG drawn to canvas2D with inlined src</h2>
+        <h2>03. Draw SVG result to canvas2D as a regular img</h2>
         <div class="step-render-wrapper">
           <div class="step-render"></div>
         </div>
       </div>
   
       <div data-name="webgl-render" class="render-step-slot">
-        <h2>04. canvas2D rendered as WebGL Texture and drawn on a quad</h2>
+        <h2>04. Draw canvas2d result as WebGL texture on a quad</h2>
         <div class="step-render-wrapper">
           <div class="step-render"></div>
         </div>
@@ -191,9 +191,9 @@
                 </li>
                 
                 <li>Compute the styles that affect each child in our HTML using <code>getComputedStyle()</code> and append the result to an inline tag. This can be a huge performance bottleneck and will result in giant strings too (you have to apply <strong>every</strong> possible style that affect this element to make sure it renders correctly)</li>
-                <li>Since our final result is a bitmap graphic rendered in WebGL, we will obviously lose real selectable text, any SEO and any kind of mouse, keyboard, etc events. We would need to supply our own logic to decide on which element we are, in fact, hovering or clicking.</li>
               </ol>
             </li>
+            <li>Since our final result is a bitmap graphic rendered in WebGL, we will obviously lose real selectable text, any SEO and any kind of mouse, keyboard, etc events. We would need to supply our own logic to decide on which element we are, in fact, hovering or clicking.</li>
           </ol>
           <br/>
           <h3>But it's not all that bad</h3>
