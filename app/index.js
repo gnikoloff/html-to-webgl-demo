@@ -29,8 +29,8 @@ const {
 
 // Turns our Chrome returns images not self closed. Let's simply cover our use case
 let domElementHTML = domElementToRender.innerHTML
-domElementHTML = domElementHTML.replace('.png">', '.png"/>')
-domElementHTML = domElementHTML.replace('.jpg">', '.jpg"/>')
+domElementHTML = domElementHTML.replaceAll('.png">', '.png"/>')
+domElementHTML = domElementHTML.replaceAll('.jpg">', '.jpg"/>')
 // Do any other transformation on your domElementHTML string here
 
 // 1. We need to fetch the images and base64 them into the html fragment
@@ -177,6 +177,7 @@ function base64ImageSources (fragment) {
   // 1. get all image sources
   const sources = (fragment.match(/<img [^>]*src="[^"]*"[^>]*>/gm) || []).map(x => x.replace(/.*src="([^"]*)".*/, '$1'))
   // 2. to render our images to svg <foreignObject /> we need to load them first and base64 encode them, which is asynchronous
+  console.log(sources)
   return new Promise((resolve, reject) => {
     Promise
       .all(sources.map(encodeImageToBase64))
