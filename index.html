@@ -3,14 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>HTML to WebGL</title>
 </head>
 <body>
 
   <div id="app">
-    <div class="main">
-      <div data-name="html-input" class="render-step-slot">
-        <h2>01. Input HTML</h2>
+    <header id="site-header">
+      <h1 id="site-title">Render HTML as a WebGL Texture demo</h1>
+      <div id="site-subtitle">
+        Demo by <a href="https://github.com/gnikoloff">Georgi Nikolov</a>
+      </div>
+    </header>
+    <div data-name="html-input" class="render-step-slot">
+      <h2>01. Input HTML</h2>
+      <div class="step-render-wrapper">
         <div class="step-render">
           <div id="html-to-render">
             <!-- <h1>hello</h1> -->
@@ -19,7 +25,7 @@
               font-family: Arial, Helvetica, sans-serif;
               max-width: 400px;
               /* border: 5px solid blue; */
-              padding: 20px;
+              padding: 20px 30px 20px 20px;
               display: flex;
               justify-content: space-between;
             ">
@@ -65,7 +71,21 @@
                     display: inline-block;
                   "
                 ></div>
-                <div>
+                <div
+                  style="position: relative;"
+                >
+                  <div
+                    style="
+                      width: 20px;
+                      height: 24px;
+                      background: blue;
+                      position: absolute;
+                      bottom: 20px;
+                      right: -6px;
+                      transform: skewX(-45deg) rotate(2deg);
+                      z-index: -1;
+                    "
+                  ></div>
                   <h1
                     style="
                       color: rgba(85, 85, 85, 0.9);
@@ -85,47 +105,55 @@
                       letter-spacing: 0.025rem;
                     "
                   >
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti laborum error tempore nulla consequuntur  👻 💀 ☠️ 👽 👾 🤖  blanditiis labore natus ratione eius, placeat omnis quas adipisci architecto harum accusamus reprehenderit, repellendus ullam. Culpa!
+                    
+                    Lorem ipsum dolor sit amet <i>consectetur adipisicing</i> elit. Deleniti laborum error tempore nulla consequuntur  👻 💀 ☠️ 👽 👾 🤖  blanditiis labore natus ratione eius, placeat omnis quas <strong>adipisci architecto</strong> harum accusamus reprehenderit, repellendus ullam. Culpa!
                     😊🥺😉😍😘😚😜😂😝😳😁😣😢😭😰🥰
                     </div>
                   </p>
                 </div>
               </div>
 
-              <div
-                style="
-                  width: 20px;
-                  height: 24px;
-                  background: blue;
-                  position: absolute;
-                  bottom: 60px;
-                  right: 14px;
-                  transform: skewX(-45deg) rotate(2deg);
-                  z-index: -1;
-                "
-              >
-            </div>
+              
           </div>
+        </div>
+        <div class="step-explanation">
+          <h4>Lorem ipsum dolar</h4>
+          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis ex quibusdam qui eveniet iure nulla assumenda aspernatur rerum deserunt voluptatem laborum, et tempore accusantium est repellat tenetur aperiam deleniti molestiae!</p>
         </div>
       </div>
 
       <div data-name="svg-render" class="render-step-slot">
         <h2>02. Input HTML as foreignObject in SVG</h2>
-        <div class="step-render"></div>
+        <div class="step-render-wrapper">
+          <div class="step-render"></div>
+          <div class="step-explanation">
+            <h4>Lorem ipsum dolar</h4>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis ex quibusdam qui eveniet iure nulla assumenda aspernatur rerum deserunt voluptatem laborum, et tempore accusantium est repellat tenetur aperiam deleniti molestiae!</p>
+          </div>
+        </div>
       </div>
 
       <div data-name="canvas-render" class="render-step-slot">
         <h2>03. SVG drawn to canvas2D with inlined src</h2>
-        <div class="step-render"></div>
+        <div class="step-render-wrapper">
+          <div class="step-render"></div>
+          <div class="step-explanation">
+            <h4>Lorem ipsum dolar</h4>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis ex quibusdam qui eveniet iure nulla assumenda aspernatur rerum deserunt voluptatem laborum, et tempore accusantium est repellat tenetur aperiam deleniti molestiae!</p>
+          </div>
+        </div>
       </div>
 
       <div data-name="webgl-render" class="render-step-slot">
         <h2>04. canvas2D rendered as WebGL Texture and drawn on a quad</h2>
-        <div class="step-render"></div>
+        <div class="step-render-wrapper">
+          <div class="step-render"></div>
+          <div class="step-explanation">
+            <h4>Lorem ipsum dolar</h4>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis ex quibusdam qui eveniet iure nulla assumenda aspernatur rerum deserunt voluptatem laborum, et tempore accusantium est repellat tenetur aperiam deleniti molestiae!</p>
+          </div>
+        </div>
       </div>
-
-    </div>
-    <div class="aside">
 
     </div>
   </div>

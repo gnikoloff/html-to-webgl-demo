@@ -23,25 +23,16 @@ body {
   }
 }
 
-.main,
-.aside {
-  height: 100vh;
-  overflow: scroll;
-  box-sizing: border-box;
-  padding: 30px;
-}
-.main {
-  width: 60%;
-}
-.aside {
-  background: #1c1c1e;
-  width: 40%;
-  height: 100vh;
-}
 .render-step-slot {
   > h2 {
     font-family: Helvetica, sans-serif;
+    border-bottom: 1px solid rgba(black, 0.12);
+    padding-bottom: 1rem;
   }
+}
+
+.step-render-wrapper {
+  display: flex;
 }
 
 .step-render {
@@ -51,7 +42,20 @@ body {
 }
 
 #app {
-  display: flex;
-  justify-content: space-between;
-  // div
+  padding: 0 60px;
+}
+
+#site-header {
+  font-family: Arial, Helvetica, sans-serif;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(black, 0.12);
+}
+
+.step-explanation {
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgba(black, 0.82);
+  line-height: 1.35rem;
+  max-width: 700px;
+  margin-left: 48px;
 }
