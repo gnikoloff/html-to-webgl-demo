@@ -14,6 +14,58 @@
         Demo by <a href="https://github.com/gnikoloff">Georgi Nikolov</a>
       </div>
     </header>
+    <div id="intro">
+      <p>
+        <h2>It all starts with our input HTML. </h2>
+        <p>We will insert our specially formated HTML into the <code>&lt;foreignObject&gt;</code> special tag. It uses the built-in browser rendering pipeline to display HTML as part of a SVG graphic.</p>
+        <h3>Restrictions of this technique</h3>
+        <p>There are some restrictions to what kind of HTML is allowed though:
+          <ol>
+            <li>
+              Form elements and inputs do not render properly.
+            </li>
+            <li>
+              No external assets, such as images, fonts, styles etc are allowed. If we want to display an image or use a special font, we need to download it first, encode it into base64 and then supply it to the <code>&lt;foreignObject&gt;</code>. This can quickly cause massively big strings to work with.
+            </li>
+            <li>
+              We have to inline all of our styles and be careful to prevent any styling inheritance on the element we want to render and its children.
+              <br />
+              <br />
+              That's because even though our HTML and SVG can inherit the host page stylesheets, once we pass them to the canvas for drawing, these inherited styles will be stripped and not applied.
+              <br />
+              (If you inspect this demo page itself, you will see how specific I am with my css selectors. I do not apply any global style to specific tags to prevent non-transfered styles once I rendert to canvas)
+              <br />
+              <br />
+              We can either:
+              <br />
+              <br />
+              <ol>
+                <li>Inline all of our styles directly on the HTML to be drawn (this is what I do in this demo, you can inspect step 1 contents):</li>
+                <code class="code">
+&lt;div style="
+  position: relative;
+  font-family: Arial, Helvetica, sans-serif;
+  max-width: 400px;
+  padding: 20px 30px 20px 20px;
+  display: flex;
+  justify-content: space-between;
+"&gt;
+...
+&lt;/div&gt;
+                </code>
+                <li>Compute the styles that affect each child in our HTML using <code>getComputedStyle()</code> and append the result to an inline tag. This can be a huge performance bottleneck and will result in giant strings too (you have to apply <strong>every</strong> possible style that affect this element to make sure it renders correctly)</li>
+              </ol>
+            </li>
+          </ol>
+          <br/>
+          <h3>But it's not all that bad</h3>
+          <p>Besides these deal-breakers, from my experience everything else appears to be fair game. Fancy CSS3 transforms, canvases and SVGs can all be embeded in &lt;foreignObject&gt; and render just fine.</p>
+        </p>
+        <br/>
+        <br/>
+        <br/>
+      </p>
+    </div>
     <div data-name="html-input" class="render-step-slot">
       <h2>01. Input HTML</h2>
       <div class="step-render-wrapper">
@@ -117,8 +169,7 @@
           </div>
         </div>
         <div class="step-explanation">
-          <h4>Lorem ipsum dolar</h4>
-          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quis ex quibusdam qui eveniet iure nulla assumenda aspernatur rerum deserunt voluptatem laborum, et tempore accusantium est repellat tenetur aperiam deleniti molestiae!</p>
+          
         </div>
       </div>
 

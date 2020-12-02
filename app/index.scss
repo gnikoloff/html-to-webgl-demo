@@ -59,3 +59,21 @@ body {
   max-width: 700px;
   margin-left: 48px;
 }
+
+.code {
+  white-space: break-spaces;
+  color: white;
+  background: #1c1c1c;
+}
+
+#intro * {
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgba(0, 0, 0, 0.82);
+  line-height: 1.35rem;
+}
+
+#intro code {
+  font-family: monospace;
+  line-height: initial;
+  color: white;
+}
