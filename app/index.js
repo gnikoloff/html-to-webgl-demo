@@ -1,45 +1,58 @@
 import svgToMiniDataURI from 'mini-svg-data-uri'
 import * as twgl from 'twgl.js'
+import Prism from 'prismjs'
 
+import 'prismjs/themes/prism-funky.css'
+import 'prismjs/themes/prism.css'
 import './index.scss'
 
 const domElementToRender = document.getElementById('html-to-render')
-const stepSlotsEls = document.getElementsByClassName('render-step-slot')
 
+// Let's grab the input HTML el width and height
 const {
   width: domElementWidth,
   height: domElementHeight,
 } = domElementToRender.getBoundingClientRect()
 
+
+// OPTIONAL
 // Compute all style properties for each element inside the HTML we want to render and inline them
-// Ideally, your styling should be inline so you can omit this expensive step
+// Ideally, your styling should be inline so you can omit this expensive step (this is the approach this demo takes)
+
 // const allChildrenInsideDomElement = domElementToRender.querySelectorAll('*')
 // for (let i = 0; i < allChildrenInsideDomElement.length; i++) {
 //   const child = allChildrenInsideDomElement[i]
 //   const style = getComputedStyle(child)
 //   child.style = style.cssText
 // }
+
+
+// Turns our Chrome returns images not self closed. Let's simply cover our use case
 let domElementHTML = domElementToRender.innerHTML
-console.log(domElementHTML)
 domElementHTML = domElementHTML.replace('.png">', '.png"/>')
 domElementHTML = domElementHTML.replace('.jpg">', '.jpg"/>')
+// Do any other transformation on your domElementHTML string here
 
-
-encodeImagesToFragment(domElementHTML).then(fragmentWithBase64Images => {
-  
-  fragmentWithBase64Images = constructSVGWithForeignObject(fragmentWithBase64Images)
-
-  makeCanvasFromSVGFragment(fragmentWithBase64Images).then(canvasToRenderAsWebGLTexture => {
-    appendCurrentStepToSection('canvas-render', canvasToRenderAsWebGLTexture)
-    renderCanvasAsWebGLContext(canvasToRenderAsWebGLTexture)
-  })
-  appendCurrentStepToSection('svg-render', fragmentWithBase64Images)
-})
-
-// console.log(getComputedStyle(domElementToRender))
+// 1. We need to fetch the images and base64 them into the html fragment
+base64ImageSources(domElementHTML)
+  // 2. Once the images are inlined, lets put the generated html markup inside a <foreignObject/>
+  .then(insertFragmentIntoForeignObject)
+  // 3. Supply the generated canvas texture to a webgl context and draw it on a quad
+  .then(renderCanvasIntoGLTexture)
 
 
 // ------------ utils ------------
+
+function insertFragmentIntoForeignObject (inputFragment) {
+  const svgSource = constructSVGWithForeignObject(inputFragment)
+  appendCurrentStepToSection('svg-render', svgSource)
+  return makeCanvasFromSVGFragment(svgSource)
+}
+
+function renderCanvasIntoGLTexture (canvasToRenderAsWebGLTexture) {
+  appendCurrentStepToSection('canvas-render', canvasToRenderAsWebGLTexture)
+  renderCanvasAsWebGLContext(canvasToRenderAsWebGLTexture)
+}
 
 function renderCanvasAsWebGLContext (canvasToDraw) {
   const canvas = document.createElement('canvas')
@@ -131,7 +144,7 @@ function makeCanvasFromSVGFragment (fragment) {
       resolve(canvas)
     }
     img.onerror = () => reject(new Error('could not draw SVG fragment into canvas'))
-    // Use helper library to encode fragment
+    // 1. Use helper library to encode fragment
     img.src = svgToMiniDataURI(fragment)
     console.log(img.src)
   })
@@ -160,7 +173,7 @@ function constructSVGWithForeignObject (fragment) {
   return svgFragment
 }
 
-function encodeImagesToFragment (fragment) {
+function base64ImageSources (fragment) {
   // 1. get all image sources
   const sources = (fragment.match(/<img [^>]*src="[^"]*"[^>]*>/gm) || []).map(x => x.replace(/.*src="([^"]*)".*/, '$1'))
   // 2. to render our images to svg <foreignObject /> we need to load them first and base64 encode them, which is asynchronous
@@ -207,7 +220,6 @@ function encodeImageToBase64 (src) {
 function appendCurrentStepToSection (sectionName, el) {
   const sectionEl = document.querySelector(`[data-name=${sectionName}]`)
   const renderOutputEl = sectionEl.getElementsByClassName('step-render')[0]
-  console.log(sectionName, renderOutputEl)
   if (typeof el === 'string') {
     renderOutputEl.innerHTML = el
   } else {
