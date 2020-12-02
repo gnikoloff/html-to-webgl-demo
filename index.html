@@ -43,11 +43,12 @@
                       overflow: hidden;
                       margin-right: 12px;
                       display: inline-block;
+                      border: 2px solid blue;
                     "
                   >
                     <img
                       style="object-fit: cover; width: 100%; height: 100%;"
-                      src="/resources/profile-image.png"
+                      src="/resources/person-1.jpg"
                     ></img>
                   </div>
                   <div
@@ -60,8 +61,14 @@
                       overflow: hidden;
                       margin-right: 12px;
                       display: inline-block;
+                      border: 2px solid blue;
                     "
-                  ></div>
+                  >
+                    <img
+                      style="object-fit: cover; width: 100%; height: 100%;"
+                      src="/resources/person-2.jpg"
+                    ></img>
+                  </div>
                   <div
                     style="
                       min-width: 62px;
@@ -72,8 +79,48 @@
                       overflow: hidden;
                       margin-right: 12px;
                       display: inline-block;
+                      border: 2px solid blue;
                     "
-                  ></div>
+                  >
+                    <img
+                      style="object-fit: cover; width: 100%; height: 100%;"
+                      src="/resources/person-3.jpg"
+                    ></img>
+                  </div>
+                  <div
+                    style="
+                      position: relative;
+                      min-width: 62px;
+                      width: 62px;
+                      height: 62px;
+                      background: blue;
+                      border-radius: 50%;
+                      overflow: hidden;
+                      margin-right: 12px;
+                      display: inline-flex;
+                      align-items: center;
+                      justify-content: center;
+                      color: white;
+                      border: 4px solid blue;
+                    "
+                  >
+                    <div
+                      style="
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        bottom: 0;
+                        left: 0;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: white;
+                        font-size: 24px;
+                      "
+                    >
+                      +
+                    </div>
+                  </div>
                   <div
                     style="position: relative;"
                   >
@@ -153,7 +200,7 @@
         <br/><br/>
         <p>What if we could create a WebGL context, and render each card as a simple quad with a texture of it's corresponding UI, instead of trying to render complex tree structure such as the DOM? Our rendering will be offloaded to the GPU, resulting in a massive performance boost and per-pixel control over its graphics using shaders.</p>
         <p>This technique works nicely with React and more specifically <code>ReactDOMServer.renderToString()</code>. It can be offloaded to web-workers for string concatenation and offscreen canvas for rendering.</p>
-        <p>This demo uses <a href="https://twgljs.org/" target="_blank">TWGL.js</a> for rendering the texture to WebGL.</p>
+        <p>This demo uses <a href="https://twgljs.org/" target="_blank">TWGL.js</a> for rendering the texture to WebGL. Inspired by <a href="https://medium.com/@VilledieuMorgan/mountaindew-x-titanfall-technical-review-35f1be4089c">this</a> and .</p>
         <br/><br/>
         <h2>It all starts with our input HTML</h2>
         <p>We will insert our specially formated HTML into SVG <code>&lt;foreignObject&gt;</code> special tag. It uses the built-in browser rendering pipeline to display HTML as part of a SVG graphic. We will then draw the SVG as a regular image onto a canvas2d element, which in turn we will use as a source to webgl texture.</p>
@@ -161,7 +208,9 @@
         <p>There are some restrictions to what kind of HTML is allowed though:
           <ol>
             <li>
-              No external assets, such as images, fonts, styles etc are allowed. If we want to display an image or use a special font, we need to download it first, encode it into base64 and then supply it to the<code>&lt;foreignObject&gt;</code>.This can quickly cause massively big strings to work with.
+              No external assets, such as images, fonts, styles etc are allowed. If we want to display an image or use a special font, we need to download it first, encode it into base64 and then supply it to the<code>&lt;foreignObject&gt;</code>.
+              <br/>
+              This can quickly cause massively big strings to work with.
             </li>
             <li>
               We have to inline all of our styles and be careful to prevent any styling inheritance on the element we want to render and its children.
