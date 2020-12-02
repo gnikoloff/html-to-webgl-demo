@@ -66,6 +66,17 @@ body {
   @media (min-width: 860px) {
     max-width: 66vw;
   }
+  ol {
+    counter-reset: item;
+    li {
+        display: block;
+        &:before {
+            content: counters(item, ". ") ". ";
+            counter-increment: item
+        }
+    }
+}
+
 }
 
 #intro * {
