@@ -19,22 +19,26 @@ const {
 //   const style = getComputedStyle(child)
 //   child.style = style.cssText
 // }
-const domElementHTML = domElementToRender.innerHTML
-console.log(domElementToRender.cloneNode(true))
+let domElementHTML = domElementToRender.innerHTML
+console.log(domElementHTML)
+domElementHTML = domElementHTML.replace('.png">', '.png"/>')
+domElementHTML = domElementHTML.replace('.jpg">', '.jpg"/>')
 
 
-let fragmentWithBase64Images = encodeImagesToFragment(domElementHTML)
-fragmentWithBase64Images = constructSVGWithForeignObject(fragmentWithBase64Images)
+encodeImagesToFragment(domElementHTML).then(fragmentWithBase64Images => {
+  
+  fragmentWithBase64Images = constructSVGWithForeignObject(fragmentWithBase64Images)
 
-makeCanvasFromSVGFragment(fragmentWithBase64Images).then(canvasToRenderAsWebGLTexture => {
-  appendCurrentStepToSection('canvas-render', canvasToRenderAsWebGLTexture)
-  renderCanvasAsWebGLContext(canvasToRenderAsWebGLTexture)
+  makeCanvasFromSVGFragment(fragmentWithBase64Images).then(canvasToRenderAsWebGLTexture => {
+    appendCurrentStepToSection('canvas-render', canvasToRenderAsWebGLTexture)
+    renderCanvasAsWebGLContext(canvasToRenderAsWebGLTexture)
+  })
+  appendCurrentStepToSection('svg-render', fragmentWithBase64Images)
 })
 
 // console.log(getComputedStyle(domElementToRender))
 
 
-appendCurrentStepToSection('svg-render', fragmentWithBase64Images)
 // ------------ utils ------------
 
 function renderCanvasAsWebGLContext (canvasToDraw) {
@@ -129,7 +133,7 @@ function makeCanvasFromSVGFragment (fragment) {
     img.onerror = () => reject(new Error('could not draw SVG fragment into canvas'))
     // Use helper library to encode fragment
     img.src = svgToMiniDataURI(fragment)
-    // console.log(img.src)
+    console.log(img.src)
   })
 }
 
@@ -160,18 +164,19 @@ function encodeImagesToFragment (fragment) {
   // 1. get all image sources
   const sources = (fragment.match(/<img [^>]*src="[^"]*"[^>]*>/gm) || []).map(x => x.replace(/.*src="([^"]*)".*/, '$1'))
   // 2. to render our images to svg <foreignObject /> we need to load them first and base64 encode them, which is asynchronous
-  Promise
-    .all(sources.map(encodeImageToBase64))
-    .then(base64s => {
-      for (let i = 0; i < base64s.length; i++) {
-        const base64Source = base64s[i]
-        const originalSource = sources[i]
-        // 3. Once we have the base64 representation of the image, replace the original external source with it
-        fragment = fragment.replace(originalSource, base64Source) 
-      }
-    })
-  
-  return fragment
+  return new Promise((resolve, reject) => {
+    Promise
+      .all(sources.map(encodeImageToBase64))
+      .then(base64s => {
+        for (let i = 0; i < base64s.length; i++) {
+          const base64Source = base64s[i]
+          const originalSource = sources[i]
+          // 3. Once we have the base64 representation of the image, replace the original external source with it
+          fragment = fragment.replace(originalSource, base64Source)
+        }
+        resolve(fragment)
+      })
+  })
                                  
 }
 
@@ -195,6 +200,7 @@ function encodeImageToBase64 (src) {
     img.onerror = () => reject(new Error('could not load provided image'))
     img.crossOrigin = 'Anonymous'
     img.src = src
+    console.log(src)
   })
 }
 
