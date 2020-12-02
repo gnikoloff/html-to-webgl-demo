@@ -150,8 +150,10 @@
         <p>If we are to build UI that required a stack of layered cards (as in Tinder), which can be fluidly moved by touch and faded out, layouting, compositing and capturing dragging events at the same time can be pretty costly.</p>
         <img style="max-width: 600px; margin: 0 auto; display: block;" src="/resources/blended-example.png" alt="Illustration of a three positioned on top of each other and blended generic UI elements" />
         <p>Compositing large elements with a lot of children which may have have their own opacities / shadowes, all while capturing touch events can get real bad real soon</p>
+        <br/><br/>
         <p>What if we could create a WebGL context, and render each card as a simple quad with a texture of it's corresponding UI, instead of trying to render complex tree structure such as the DOM? Our rendering will be offloaded to the GPU, resulting in a massive performance boost and per-pixel control over its graphics using shaders.</p>
         <p>This technique works nicely with React and more specifically <code>ReactDOMServer.renderToString()</code>. It can be offloaded to web-workers for string concatenation and offscreen canvas for rendering.</p>
+        <p>This demo uses <a href="https://twgljs.org/" target="_blank">TWGL.js</a> for rendering the texture to WebGL.</p>
         <br/><br/>
         <h2>It all starts with our input HTML</h2>
         <p>We will insert our specially formated HTML into SVG <code>&lt;foreignObject&gt;</code> special tag. It uses the built-in browser rendering pipeline to display HTML as part of a SVG graphic. We will then draw the SVG as a regular image onto a canvas2d element, which in turn we will use as a source to webgl texture.</p>
